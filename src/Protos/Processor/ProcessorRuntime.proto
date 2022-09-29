@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+
+import "Protos/Common/Common.proto";
+
+option csharp_namespace = "ProcessorRuntimeRpc.V1";
+package ProcessorRuntimeRpc;
+
+// 大核通用应用服务
+service ProcessorRuntimeService {
+	rpc Notify(CommonRpc.Notification) returns (CommonRpc.Result);// 通知
+}

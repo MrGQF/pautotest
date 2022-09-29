@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+import "Protos/Common/Common.proto";
+
+option csharp_namespace = "DataSubscriberRpc.V1";
+package DataSubscriberRpc;
+
+// 数据订阅器
+service DataSubscriberService {
+	rpc SubscribAsync(stream CommonRpc.DataRequest) returns (stream CommonRpc.Result); // 订阅
+	rpc UnSubscrib(CommonRpc.DataRequest) returns (CommonRpc.Result);    // 解订阅
+}

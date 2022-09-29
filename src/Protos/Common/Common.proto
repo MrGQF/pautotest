@@ -1,0 +1,49 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+
+option csharp_namespace = "CommonRpc.V1";
+package CommonRpc;
+
+// 通用返回结果
+message Result {
+	int32 Code = 1;  // 状态码
+	google.protobuf.StringValue Message = 2; // 描述
+	google.protobuf.Any Data = 3; // 数据
+}
+
+// 同步信息
+message SyncInfo {
+	google.protobuf.StringValue VendorServerAddress = 1; // 小核服务地址
+}
+
+// 通知消息
+message Notification{
+	google.protobuf.StringValue Topic = 1;  // 主题
+	google.protobuf.StringValue RoutingKey = 2; // 路由
+	google.protobuf.StringValue Message = 3; // 消息
+}
+
+// 调用方法请求值
+message InvokeRequest {
+	google.protobuf.StringValue Type = 1; // 调用方法名
+	google.protobuf.StringValue Param = 2; // 调用方法参数
+}
+
+// 调用方法返回值
+message InvokeResponse{
+	google.protobuf.StringValue Data = 1; // 方法返回值,没有则传空字符串或者null
+}
+
+// 数据请求值
+message DataRequest {
+	google.protobuf.StringValue Type = 1;  // 类型
+	google.protobuf.StringValue Param = 2; // 参数
+}
+
+// 数据返回值
+message DataResponse {
+	google.protobuf.StringValue Type = 1;  // 类型
+	google.protobuf.StringValue Data = 2;  // 数据
+}

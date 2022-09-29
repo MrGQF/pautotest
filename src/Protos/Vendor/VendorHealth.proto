@@ -1,0 +1,35 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "Protos/Common/Common.proto";
+
+option csharp_namespace = "VendorHealthRpc.V1";
+package VendorHealth;
+
+// 小核 健康检查请求值
+message VendorHealthRequest {
+	repeated google.protobuf.StringValue WidgetInstanceId = 1; //插件实例Id;不传时或者传空时,默认查询所有
+}
+
+// 小核 状态
+message VendorStatus{
+	google.protobuf.StringValue Id = 1; // 小核实例标识
+	int32 Status = 2; //小核状态(正常：0); 
+}
+
+// 插件状态
+message WidgetStatus{
+	google.protobuf.StringValue InstanceId = 1; // 实例Id
+	int32 Status = 2; // 状态(正常：0);
+}
+
+// 小核 健康检查返回值
+message VendorHealthResponse {
+	VendorStatus Vendor = 1; // 小核状态
+	repeated WidgetStatus Widgets = 2; // 插件状态
+}
+
+// 小核健康检查
+service VendorHealthService {
+	rpc HealthCheck(VendorHealthRequest) returns (CommonRpc.Result); // 健康检查
+}

@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "Protos/Common/Common.proto";
+
+option csharp_namespace = "ProcessorHealthRpc.V1";
+package ProcessorHealthRpc;
+
+// 大核健康检查请求值
+message ProcessorHealthCheckRequest {
+}
+
+// 大核状态
+message ProcessorStatus{
+	google.protobuf.StringValue Id = 1; // 大核实例标识
+	int32 Status = 2; //大核状态(正常：0); 
+}
+
+// 大核健康检查返回值
+message ProcessorHealthCheckResponse {
+	ProcessorStatus Processor = 1; // 大核状态
+}
+
+// 大核健康检查
+service ProcessorHealthService {
+	rpc HealthCheck(ProcessorHealthCheckRequest) returns (CommonRpc.Result); // 健康检查
+}

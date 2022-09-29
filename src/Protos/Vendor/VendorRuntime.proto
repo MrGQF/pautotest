@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+
+import "Protos/Common/Common.proto";
+
+option csharp_namespace = "VendorRuntimeRpc.V1";
+package VendorRuntimeRpc;
+
+// 小核 通用服务
+service VendorRuntimeService {
+	rpc Invoke(CommonRpc.InvokeRequest) returns (CommonRpc.Result); // 同步调用方法
+	rpc InvokeReturnAsync(CommonRpc.InvokeRequest) returns (stream CommonRpc.Result); // 异步调用方法
+
+	rpc Notify(CommonRpc.Notification) returns (CommonRpc.Result);// 小核通知事件
+}

@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+import "Protos/Common/Common.proto";
+
+option csharp_namespace = "DataRepositoryRpc.V1";
+package DataRepository;
+
+// 数据操作集合
+service DataRepositoryService {
+	rpc Query(CommonRpc.DataRequest) returns (CommonRpc.Result); // 同步请求
+	rpc QueryAndReturnAsync(CommonRpc.DataRequest) returns (stream CommonRpc.Result); // 异步请求
+}
