@@ -18,8 +18,17 @@ def Start(path, param):  # 启动小核
     return subprocess.Popen(args=cmd, shell=False)
 
 
+def Close():  # 关闭小核
+    try:
+        InvokeHandler(
+            "ShutdownCosmos", "0", Dto.VendorCloseRequest.ToDict())
+    except Exception:
+        print("关闭小核")
+
+
 if __name__ == "__main__":
-    path = "D:/Desktop/Cosmos.Client.Vendor.exe"
+    path = "D:/Code/VSCode/pautotest/vendor/win-x86/Cosmos.Client.Vendor.exe"
     param = "-purl http://localhost:8068 -vurl http://{target} -ppid -1 -wm Offline".format(
         target="localhost:11526")
     Start(path, param)
+    Close()

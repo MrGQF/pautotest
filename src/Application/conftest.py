@@ -13,6 +13,7 @@ def StartVendor():
 
 
 def CloseVendor():
+    VendorProcessor.Close()
     print("关闭小核")
     pass
 

@@ -14,5 +14,3 @@ def GetTestData(code, count, itemKey):
         timeStamps.append(timeStamp)
         values.append(str(item[itemKey]))
     return (code, timeStamps, values)
-
-    

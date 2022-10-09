@@ -1,5 +1,6 @@
 import abc
 import os
+import profile
 import Infrastructure.Analysis.Profile as Profile
 import Application.Sdk.Invoke.WidgetProcessor as WidgetProcessor
 import time
@@ -31,30 +32,55 @@ class StressProcessor(metaclass=abc.ABCMeta):
 
         self.Recover(widgetHandle, recoverParam)
 
-        CpuTimes = []
-        MemPercent = []
-        Index = []
-        Similarity = []
+        loadtimes = []
+        indexs = []
+        similaritys = []
+        cpu_percents = []
+        mems = []
+        num_handles = []
+        num_threads = []
+        gdi_objs = []
+        io_readcounts = []
+        io_writecounts = []
         for i in range(loop):
             self.Recover(widgetHandle, recoverParam)
 
-            cputime_Default = Profile.GetCpuTime(pid)
+            cputime_before = Profile.GetCpuTime(pid)
             time.sleep(1)
 
             self.Process(widgetHandle, processParam)
-            cputime_SetData = Profile.GetCpuTime(pid) - cputime_Default
-            CpuTimes.append(cputime_SetData)
-            MemPercent.append(Profile.GetMemoryPercent(pid))
-            time.sleep(1)
-            Index.append(i)
+
+            cputime_after = Profile.GetCpuTime(pid)
+            loadtime = cputime_after - cputime_before
+            loadtimes.append(loadtime)
+
+            tuple = Profile.GetIndexs(pid)
+            mems.append(tuple["mem"])
+            cpu_percents.append(tuple["cpu_percent"])
+            num_handles.append(tuple["num_handle"])
+            num_threads.append(tuple["num_thread"])
+            gdi_objs.append(tuple["gdi_obj"])
+            io_readcounts.append(tuple["io_readcount"])
+            io_writecounts.append(tuple["io_writecount"])
+            indexs.append(i)
 
             resultPicPath = filePathPre + str(i) + ".png"
             Profile.SaveWindowPicture(int(widgetHandle), resultPicPath)
-            Similarity.append(Profile.DiffPicture(
-                filePathPre + ".png", resultPicPath))
+            similarity = Profile.DiffPicture(
+                filePathPre + ".png", resultPicPath)
+            similaritys.append(similarity)
 
         Profile.SaveWidgetProfile(
-            filePath=filePathPre + ".csv", index=Index, mem_percent=MemPercent, cpu_time=CpuTimes, similarity=Similarity)
+            filePath=filePathPre + ".csv",
+            indexs=indexs,
+            loadtimes=loadtimes,
+            similaritys=similaritys, cpu_percents=cpu_percents,
+            mems=mems,
+            num_handles=num_handles,
+            num_threads=num_threads,
+            gdi_objs=gdi_objs,
+            io_readcounts=io_readcounts,
+            io_writecounts=io_writecounts)
 
         WidgetProcessor.Close()
 

@@ -12,7 +12,7 @@ def Create(guid, version, titleBarVisibility, windowVisibility):  # 创建插件
     return value
 
 
-def Close():
+def Close():  # 关闭插件
     pass
 
 

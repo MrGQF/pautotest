@@ -1,16 +1,6 @@
 import json
 
 
-class VendorProcessor:  # 小核管理
-    # 打开
-    def Open():
-        pass
-
-    # 关闭
-    def Close():
-        pass
-
-
 class InvokeRequest:
     def __init__(self, action, actionInstance, actionContext):  # 插件调用请求值
         self.Action = action
@@ -52,6 +42,13 @@ class InvokeResponseActionContext:
 
     def ToObj(str):
         return InvokeResponseActionContext(str["Return"])
+
+
+class VendorCloseRequest:  # 小核关闭请求值
+    def ToDict():
+        return {
+
+        }
 
 
 class WidgetCreateRequest:  # 插件创建请求值
