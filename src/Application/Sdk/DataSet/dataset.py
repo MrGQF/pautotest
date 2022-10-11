@@ -1,13 +1,18 @@
 import ctypes
+import gc
 import os
 import time
+import Application.Sdk.Widget.callback as callback
 
 
 def Callback(action, method, param):
-    return method
+    print("触发回调:", action, method, param)
+    return callback.Agent(action.decode('utf-8'), method.decode('utf-8'), param.decode('utf-8')).encode('utf-8')
 
 
 def ReleaseCallbackReturn(returnValue):
+    print("触发回收: ", returnValue.decode('utf-8'))
+    del returnValue
     return
 
 
@@ -16,10 +21,9 @@ dll = ctypes.CDLL(path)
 
 CChar = ctypes.c_char_p
 CPointer = ctypes.c_void_p(None)
-CallbackPointer = (ctypes.CFUNCTYPE(
-    CChar, CChar, CChar, CChar))(Callback)
-ReleaseCallbackReturnPointer = (ctypes.CFUNCTYPE(
-    None, CChar))(ReleaseCallbackReturn)
+CallbackPointer = (ctypes.CFUNCTYPE(CChar, CChar, CChar, CChar))(Callback)
+ReleaseCallbackReturnPointer = (
+    ctypes.CFUNCTYPE(None, CChar))(ReleaseCallbackReturn)
 
 InitFunc = dll.Init
 InitFunc.argtypes = [CPointer, CPointer, CChar, CChar]
